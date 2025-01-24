@@ -1,5 +1,16 @@
 package com.karmunity.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Column;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
+import java.time.LocalDateTime;
+
 @Entity
 public class Shoutout {
 
@@ -20,10 +31,6 @@ public class Shoutout {
 
     @Column(nullable = false)
     private LocalDateTime createdAt;  // When the shoutout was created
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private NotificationStatus notificationStatus;  // Status of the notification
 
     // Getters and Setters
     public Long getId() {
@@ -64,13 +71,5 @@ public class Shoutout {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public NotificationStatus getNotificationStatus() {
-        return notificationStatus;
-    }
-
-    public void setNotificationStatus(NotificationStatus notificationStatus) {
-        this.notificationStatus = notificationStatus;
     }
 }

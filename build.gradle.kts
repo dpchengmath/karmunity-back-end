@@ -1,6 +1,6 @@
 plugins {
 	java
-	kotlin("jvm") version "1.8.0"
+	kotlin("jvm") version "2.1.0"
 	id("org.springframework.boot") version "3.4.2"
 	id("io.spring.dependency-management") version "1.1.7"
 }
@@ -36,6 +36,8 @@ dependencies {
 	implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
 	implementation("jakarta.validation:jakarta.validation-api:3.0.0")
 	implementation("org.hibernate:hibernate-validator:6.2.1.Final")
+//	implementation("org.glassfish:jakarta.el:5.0.0")
+	implementation("org.glassfish:jakarta.el:4.0.0")
 	implementation("org.postgresql:postgresql:42.5.0")
 	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 	compileOnly("org.projectlombok:lombok")
