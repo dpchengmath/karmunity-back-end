@@ -42,6 +42,7 @@ out/
 
 target/
 build/
+**/models.backup/
 
 ### NetBeans ###
 /nbproject/private/

@@ -1,8 +1,10 @@
 package com.karmunity.models;
 
+import lombok.Data;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+@Data
 @Entity
 public class Shoutout {
 
@@ -22,46 +24,5 @@ public class Shoutout {
     private String content;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt;  // When the shoutout was created
-
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Member getSender() {
-        return sender;
-    }
-
-    public void setSender(Member sender) {
-        this.sender = sender;
-    }
-
-    public Member getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(Member receiver) {
-        this.receiver = receiver;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+    private LocalDateTime createdAt;
 }
