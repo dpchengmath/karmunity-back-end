@@ -1,9 +1,10 @@
 package com.karmunity.models;
+import com.karmunity.models.Invitation;
 
-import java.util.*;
-import java.time.LocalDate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import java.util.*;
+import java.time.LocalDate;
 
 @Entity
 public class Member {
@@ -18,7 +19,8 @@ public class Member {
     @NotNull
     private String lastName;
 
-    private String pronouns;  // Optional
+    @NotNull
+    private String pronouns;
 
     @NotNull
     @Email
@@ -33,7 +35,7 @@ public class Member {
     @NotNull
     private String password;
 
-    private String status;  // Optional
+    private String status;
 
     private boolean hasPet;
 
@@ -46,6 +48,12 @@ public class Member {
             inverseJoinColumns = @JoinColumn(name = "karmunity_id")
     )
     private List<Karmunity> karmunities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "sender")
+    private List<Invitation> sentInvitations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "recipient")
+    private List<Invitation> receivedInvitations = new ArrayList<>();
 
     // Getters and Setters
     public Long getId() {
@@ -142,5 +150,21 @@ public class Member {
 
     public void setKarmunities(List<Karmunity> karmunities) {
         this.karmunities = karmunities;
+    }
+
+    public List<Invitation> getSentInvitations() {
+        return sentInvitations;
+    }
+
+    public void setSentInvitations(List<Invitation> sentInvitations) {
+        this.sentInvitations = sentInvitations;
+    }
+
+    public List<Invitation> getReceivedInvitations() {
+        return receivedInvitations;
+    }
+
+    public void setReceivedInvitations(List<Invitation> receivedInvitations) {
+        this.receivedInvitations = receivedInvitations;
     }
 }
