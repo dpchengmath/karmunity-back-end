@@ -1,8 +1,20 @@
+buildscript {
+	dependencies {
+		classpath("com.h2database:h2:2.2.224")
+	}
+}
+
 plugins {
 	java
 	kotlin("jvm") version "2.1.0"
 	id("org.springframework.boot") version "3.4.2"
 	id("io.spring.dependency-management") version "1.1.7"
+	id("org.flywaydb.flyway") version "10.0.0"
+}
+
+flyway {
+	url = "jdbc:h2:file:./target/foobar"
+	user = "sa"
 }
 
 group = "com.karmunity"

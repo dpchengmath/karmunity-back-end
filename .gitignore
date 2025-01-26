@@ -42,7 +42,7 @@ out/
 
 target/
 build/
-**/models.backup/
+**/modelsBackup/
 
 ### NetBeans ###
 /nbproject/private/
@@ -79,4 +79,4 @@ replay_pid*
 ### VS Code ###
 .vscode/
 
-env.properties
+src/main/resources/env.properties
