@@ -1,0 +1,1 @@
+CREATE TYPE karmunity_invitation_status AS ENUM ('PENDING', 'ACCEPTED', 'REJECTED');

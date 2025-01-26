@@ -1,0 +1,13 @@
+CREATE TABLE member (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    pronouns VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    birthday DATE NOT NULL,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    status VARCHAR(255),
+    has_pet BOOLEAN DEFAULT FALSE,
+    karma INT DEFAULT 0
+);
