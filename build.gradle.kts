@@ -19,7 +19,7 @@ flyway {
 	user = "postgres"
 	password = "postgres"
 	driver = "org.postgresql.Driver"
-	locations = listOf("filesystem:src/main/resources/db/migration").toTypedArray()
+	locations = listOf("filesystem:src/main/db/migration").toTypedArray()
 }
 
 group = "com.karmunity"
