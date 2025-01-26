@@ -9,12 +9,17 @@ plugins {
 	kotlin("jvm") version "2.1.0"
 	id("org.springframework.boot") version "3.4.2"
 	id("io.spring.dependency-management") version "1.1.7"
-	id("org.flywaydb.flyway") version "10.0.0"
+	id("org.flywaydb.flyway") version "9.5.0"
 }
 
 flyway {
-	url = "jdbc:h2:file:./target/foobar"
-	user = "sa"
+//	url = "jdbc:h2:file:./target/foobar"
+//	user = "sa"
+	url = "jdbc:postgresql://localhost:5432/karmunity_development"
+	user = "postgres"
+	password = "postgres"
+	driver = "org.postgresql.Driver"
+	locations = listOf("filesystem:src/main/resources/db/migration").toTypedArray()
 }
 
 group = "com.karmunity"
