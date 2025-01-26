@@ -33,7 +33,7 @@ dependencies {
 	implementation("jakarta.validation:jakarta.validation-api:3.0.0")
 	implementation("org.hibernate:hibernate-validator:6.2.1.Final")
 	implementation("org.glassfish:jakarta.el:4.0.0")
-	implementation("org.postgresql:postgresql:42.5.0")
+	implementation("org.postgresql:postgresql:42.7.2")
 	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
