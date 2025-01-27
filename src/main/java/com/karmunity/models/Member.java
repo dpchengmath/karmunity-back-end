@@ -3,11 +3,15 @@ package com.karmunity.models;
 import lombok.Data;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
+
 import java.time.LocalDate;
 import java.util.*;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class Member {
 
     @Id
