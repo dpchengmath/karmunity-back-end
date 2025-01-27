@@ -4,8 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@EnableJpaRepositories(basePackages = "com.karmunity.repositories")
 @SpringBootApplication
+@EnableJpaRepositories(basePackages = "com.karmunity.repositories")
 public class KarmunityApplication {
 
 	public static void main(String[] args) {
