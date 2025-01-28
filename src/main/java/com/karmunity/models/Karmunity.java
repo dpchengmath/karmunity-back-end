@@ -1,10 +1,12 @@
 package com.karmunity.models;
 
+import com.karmunity.KarmunityApplication;
 import lombok.Data;
 import java.util.*;
 import java.time.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import org.springframework.boot.SpringApplication;
 
 @Data
 @Entity

@@ -1,4 +1,5 @@
 package com.karmunity.models;
+import com.karmunity.models.KarmunityInvitationStatus;
 
 import lombok.Data;
 import jakarta.persistence.*;
@@ -33,6 +34,3 @@ public class KarmunityInvitation {
     private KarmunityInvitationStatus status;
 }
 
-enum KarmunityInvitationStatus {
-    PENDING, ACCEPTED, REJECTED
-}

@@ -24,8 +24,9 @@ public class Member {
     @NotNull
     private String lastName;
 
+    @Enumerated(EnumType.STRING)
     @NotNull
-    private String pronouns;
+    private Pronouns pronouns;
 
     @NotNull
     @Email
@@ -44,7 +45,7 @@ public class Member {
 
     private boolean hasPet;
 
-    private int karma;
+    private int karma = 0;
 
     @ManyToMany
     @JoinTable(

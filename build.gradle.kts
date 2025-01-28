@@ -63,6 +63,7 @@ flyway {
 //	locations = arrayOf("filesystem:src/main/resources/db/migration")
 	locations = arrayOf("classpath:db/migration")
 	baselineOnMigrate = true
+	cleanDisabled = false
 }
 
 tasks.withType<Test> {
