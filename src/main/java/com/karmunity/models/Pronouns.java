@@ -17,12 +17,16 @@ public enum Pronouns {
         this.displayName = displayName;
     }
 
+    // Method to map a string to the corresponding enum constant
     public static Pronouns fromString(String text) {
-        for (Pronouns p : Pronouns.values()) {
-            if (p.displayName.equalsIgnoreCase(text)) {
-                return p;
+        // Normalize the input text by replacing any slashes with underscores
+        String normalizedText = text.replaceAll("/", "_").toUpperCase();
+
+        for (Pronouns pronoun : Pronouns.values()) {
+            if (pronoun.name().equals(normalizedText)) {
+                return pronoun;
             }
         }
-        return null;
+        return OTHER;  // Default to 'OTHER' if no match is found
     }
 }

@@ -1,9 +1,12 @@
 package com.karmunity.models;
+import com.karmunity.models.Pronouns;
 
 import lombok.Data;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
@@ -24,6 +27,7 @@ public class Member {
     @NotNull
     private String lastName;
 
+    @Setter
     @Enumerated(EnumType.STRING)
     @NotNull
     private Pronouns pronouns;
@@ -43,7 +47,7 @@ public class Member {
 
     private String status;
 
-    private boolean hasPet;
+    private Boolean hasPet = false;
 
     private int karma = 0;
 
