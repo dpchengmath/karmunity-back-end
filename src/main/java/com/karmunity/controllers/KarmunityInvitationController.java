@@ -48,7 +48,7 @@ public class KarmunityInvitationController {
 
         if (existingInvitation.isPresent()) {
             KarmunityInvitation invitation = existingInvitation.get();
-            invitation.setStatus(newStatus);
+            invitation.setInvitationStatus(newStatus);  // corrected variable name here
             KarmunityInvitation updatedInvitation = invitationRepository.save(invitation);
             return ResponseEntity.ok(updatedInvitation);
         }

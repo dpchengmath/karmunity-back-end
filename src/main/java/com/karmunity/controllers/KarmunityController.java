@@ -45,7 +45,10 @@ public class KarmunityController {
             return ResponseEntity.notFound().build();
         }
         Karmunity karmunity = optionalKarmunity.get();
-        karmunity.setName(karmunityDetails.getName());
+
+        // Update the karmunity_name field instead of 'name'
+        karmunity.setKarmunity_name(karmunityDetails.getKarmunity_name());
+
         // Update other fields as needed
         karmunityRepository.save(karmunity);
         return ResponseEntity.ok(karmunity);

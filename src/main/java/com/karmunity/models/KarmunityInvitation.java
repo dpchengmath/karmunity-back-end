@@ -31,6 +31,6 @@ public class KarmunityInvitation {
 
     @Enumerated(EnumType.STRING)
     @NotNull
-    private KarmunityInvitationStatus status;
+    private KarmunityInvitationStatus invitationStatus;
 }
 

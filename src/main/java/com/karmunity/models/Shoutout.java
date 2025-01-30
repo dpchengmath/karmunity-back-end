@@ -21,7 +21,7 @@ public class Shoutout {
     private Member receiver;
 
     @Column(nullable = false)
-    private String content;
+    private String shoutoutContent;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;

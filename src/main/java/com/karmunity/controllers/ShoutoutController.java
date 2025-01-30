@@ -31,9 +31,13 @@ public class ShoutoutController {
 
     // Create a new Shoutout
     @PostMapping("/create")
-    public ResponseEntity<Shoutout> createShoutout(@RequestBody Shoutout shoutout) {
+    public ResponseEntity<Shoutout> createShoutoutContent(@RequestBody Shoutout shoutout) {
         if (shoutout.getCreatedAt() == null) {
             shoutout.setCreatedAt(java.time.LocalDateTime.now());
+        }
+
+        if (shoutout.getSender() == null || shoutout.getReceiver() == null) {
+            return ResponseEntity.badRequest().body(null);
         }
 
         Shoutout savedShoutout = shoutoutRepository.save(shoutout);
@@ -42,12 +46,12 @@ public class ShoutoutController {
 
     // Update a shoutout's content
     @PutMapping("/{id}")
-    public ResponseEntity<Shoutout> updateShoutout(@PathVariable Long id, @RequestBody String newContent) {
+    public ResponseEntity<Shoutout> updateShoutout(@PathVariable Long id, @RequestBody String newShoutoutContent) {
         Optional<Shoutout> existingShoutout = shoutoutRepository.findById(id);
 
         if (existingShoutout.isPresent()) {
             Shoutout shoutout = existingShoutout.get();
-            shoutout.setContent(newContent);
+            shoutout.setShoutoutContent(newShoutoutContent);
             shoutout.setCreatedAt(java.time.LocalDateTime.now());
             Shoutout updatedShoutout = shoutoutRepository.save(shoutout);
             return ResponseEntity.ok(updatedShoutout);
