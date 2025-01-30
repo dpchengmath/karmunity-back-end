@@ -36,14 +36,12 @@ public class MemberController {
         try {
             Member member = new Member();
 
-            // Ensure hasPet is not null
             if (memberDetails.getHasPet() == null) {
-                member.setHasPet(false);  // Default to false if null
+                member.setHasPet(false);
             } else {
                 member.setHasPet(memberDetails.getHasPet());
             }
 
-            // Set other fields from memberDetails
             member.setFirstName(memberDetails.getFirstName());
             member.setLastName(memberDetails.getLastName());
             member.setEmail(memberDetails.getEmail());
@@ -54,7 +52,7 @@ public class MemberController {
             member.setKarma(memberDetails.getKarma());
 
             if (memberDetails.getPronouns() == null) {
-                member.setPronouns(Pronouns.OTHER);  // Default to "other" if no pronouns are provided
+                member.setPronouns(Pronouns.OTHER);
             } else {
                 member.setPronouns(memberDetails.getPronouns());
             }
@@ -83,9 +81,9 @@ public class MemberController {
 
             // Set pronouns, default to OTHER if null
             if (memberDetails.getPronouns() != null) {
-                member.setPronouns(memberDetails.getPronouns());  // Use the Pronouns enum directly
+                member.setPronouns(memberDetails.getPronouns());
             } else {
-                member.setPronouns(Pronouns.OTHER);  // Default to "other" if no pronouns are provided
+                member.setPronouns(Pronouns.OTHER);
             }
 
             memberRepository.save(member);
