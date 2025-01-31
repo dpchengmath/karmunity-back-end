@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/members")
+@RequestMapping("/members")
 public class MemberController {
 
     @Autowired
@@ -31,7 +31,7 @@ public class MemberController {
     }
 
     // Create a new member
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<?> createMember(@RequestBody Member memberDetails) {
         try {
             Member member = new Member();

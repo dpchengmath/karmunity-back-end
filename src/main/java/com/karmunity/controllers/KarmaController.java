@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/karma")
+@RequestMapping("/karma")
 public class KarmaController {
 
     @Autowired
@@ -30,15 +30,15 @@ public class KarmaController {
     }
 
     // Create a new Karma record
-    @PostMapping("/create")
-    public ResponseEntity<Karma> createKarma(@RequestBody Karma karma) {
+    @PostMapping("/give-karma")
+    public ResponseEntity<Karma> giveKarma(@RequestBody Karma karma) {
         Karma savedKarma = karmaRepository.save(karma);
         return ResponseEntity.status(201).body(savedKarma);
     }
 
     // Endpoint to update an existing Karma record
-    @PutMapping("/{id}")
-    public ResponseEntity<Karma> updateKarma(@PathVariable Long id, @RequestBody Karma karmaDetails) {
+    @PutMapping("/{id}/receive-karma")
+    public ResponseEntity<Karma> receiveKarma(@PathVariable Long id, @RequestBody Karma karmaDetails) {
         Optional<Karma> existingKarma = karmaRepository.findById(id);
 
         if (existingKarma.isPresent()) {

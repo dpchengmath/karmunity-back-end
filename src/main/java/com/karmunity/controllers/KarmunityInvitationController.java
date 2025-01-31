@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/invitations")
+@RequestMapping("/invitations")
 public class KarmunityInvitationController {
 
     @Autowired
@@ -31,7 +31,7 @@ public class KarmunityInvitationController {
     }
 
     // Create a new Karmunity Invitation
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<KarmunityInvitation> createInvitation(@RequestBody KarmunityInvitation invitation) {
         if (invitation.getSentAt() == null) {
             invitation.setSentAt(java.time.LocalDateTime.now());

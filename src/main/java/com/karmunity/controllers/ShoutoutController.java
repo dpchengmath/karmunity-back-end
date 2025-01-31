@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/shoutouts")
+@RequestMapping("/shoutouts")
 public class ShoutoutController {
 
     @Autowired
@@ -30,7 +30,7 @@ public class ShoutoutController {
     }
 
     // Create a new Shoutout
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Shoutout> createShoutoutContent(@RequestBody Shoutout shoutout) {
         if (shoutout.getCreatedAt() == null) {
             shoutout.setCreatedAt(java.time.LocalDateTime.now());

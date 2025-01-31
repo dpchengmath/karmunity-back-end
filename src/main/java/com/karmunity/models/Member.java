@@ -49,7 +49,13 @@ public class Member {
 
     private Boolean hasPet = false;
 
+    @Setter
+    @Getter
     private int karma = 0;
+
+    public void addKarma(KarmaAct karmaAct) {
+        this.karma += karmaAct.getPoints();
+    }
 
     @ManyToMany
     @JoinTable(
