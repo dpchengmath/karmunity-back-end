@@ -10,17 +10,22 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 public class SpringSecurityConfiguration {
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeRequests()
-                .requestMatchers(HttpMethod.GET, "/api/members/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/members/create").authenticated()
-                .requestMatchers(HttpMethod.PUT, "/api/members/**").authenticated()
-                .requestMatchers(HttpMethod.DELETE, "/api/members/**").authenticated()
+        http.csrf().disable().cors()
+                .and().authorizeHttpRequests()
+                .requestMatchers(HttpMethod.GET, "/members/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/members/create").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/members/**").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/members/**").authenticated()
                 .anyRequest().authenticated()
                 .and().formLogin()
                 .permitAll()
@@ -47,5 +52,18 @@ public class SpringSecurityConfiguration {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+        corsConfiguration.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "PATCH", "DELETE"));
+        corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        corsConfiguration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        return source;
     }
 }

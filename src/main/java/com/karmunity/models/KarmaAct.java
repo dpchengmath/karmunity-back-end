@@ -1,5 +1,8 @@
 package com.karmunity.models;
 
+import lombok.Getter;
+
+@Getter
 public enum KarmaAct {
     ACCOUNTABILITY(1),
     COLLABORATION(1),
@@ -18,10 +21,6 @@ public enum KarmaAct {
 
     KarmaAct(int points) {
         this.points = points;
-    }
-
-    public int getPoints() {
-        return points;
     }
 
     public static KarmaAct fromString(String value) {

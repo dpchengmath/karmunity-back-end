@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/members")
+@CrossOrigin(origins = "http://localhost:5173")
 public class MemberController {
 
     @Autowired
