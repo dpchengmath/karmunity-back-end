@@ -37,6 +37,14 @@ public class KarmunityController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    // Get Karmunity by Name
+    @GetMapping("/{karmunityName}")
+    public ResponseEntity<Karmunity> getKarmunityByName(@PathVariable String karmunityName) {
+        Optional<Karmunity> karmunity = karmunityRepository.findByKarmunityName(karmunityName);
+        return karmunity.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     // Update a Karmunity
     @PutMapping("/{id}")
     public ResponseEntity<Karmunity> updateKarmunity(@PathVariable Long id, @RequestBody Karmunity karmunityDetails) {
@@ -46,10 +54,8 @@ public class KarmunityController {
         }
         Karmunity karmunity = optionalKarmunity.get();
 
-        // Update the karmunity_name field instead of 'name'
-        karmunity.setKarmunity_name(karmunityDetails.getKarmunity_name());
+        karmunity.setKarmunityName(karmunityDetails.getKarmunityName());
 
-        // Update other fields as needed
         karmunityRepository.save(karmunity);
         return ResponseEntity.ok(karmunity);
     }

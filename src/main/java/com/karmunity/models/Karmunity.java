@@ -17,7 +17,7 @@ public class Karmunity {
     private Long id;
 
     @NotNull
-    private String karmunity_name;
+    private String karmunityName;
 
     @ManyToMany(mappedBy = "karmunities")
     private List<Member> members = new ArrayList<>();

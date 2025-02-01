@@ -2,11 +2,13 @@ package com.karmunity.controllers;
 
 import com.karmunity.models.Member;
 import com.karmunity.models.Pronouns;
+import com.karmunity.repositories.KarmunityRepository;
 import com.karmunity.repositories.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,17 +20,67 @@ public class MemberController {
     @Autowired
     private MemberRepository memberRepository;
 
-    // Get all members
+    @Autowired
+    private KarmunityRepository karmunityRepository;
+
     @GetMapping
-    public List<Member> getAllMembers() {
-        return memberRepository.findAll();
+    public ResponseEntity<List<Member>> searchMembers(
+            @RequestParam(required = false) String username,
+            @RequestParam(required = false) Long id) {
+
+        List<Member> members = new ArrayList<>();
+
+        // If username is provided, search by username
+        if (username != null && !username.isEmpty()) {
+            Optional<Member> member = memberRepository.findByUsername(username);
+            member.ifPresent(members::add);
+        }
+        // If id is provided, search by id
+        else if (id != null) {
+            Optional<Member> member = memberRepository.findById(id);
+            member.ifPresent(members::add);
+        }
+        // If neither username nor id is provided, return all members
+        else {
+            members = memberRepository.findAll();
+        }
+
+        if (!members.isEmpty()) {
+            return ResponseEntity.ok(members);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    // Get a member by ID
+    // Get member by ID
     @GetMapping("/{id}")
     public ResponseEntity<Member> getMemberById(@PathVariable Long id) {
         Optional<Member> member = memberRepository.findById(id);
         return member.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // Get all members in a specific Karmunity
+    @GetMapping("/karmunity/{karmunityName}")
+    public ResponseEntity<List<Member>> getMembersByKarmunity(@PathVariable String karmunityName) {
+        List<Member> members = memberRepository.findByKarmunities_KarmunityName(karmunityName);
+        if (!members.isEmpty()) {
+            return ResponseEntity.ok(members);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Get all Karmunities a member is part of
+    @GetMapping("/{id}/karmunities")
+    public ResponseEntity<List<String>> getKarmunitiesByMember(@PathVariable Long id) {
+        Optional<Member> member = memberRepository.findById(id);
+        if (member.isPresent()) {
+            List<String> karmunityNames = new ArrayList<>();
+            member.get().getKarmunities().forEach(k -> karmunityNames.add(k.getKarmunityName()));
+            return ResponseEntity.ok(karmunityNames);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     // Create a new member
@@ -80,7 +132,6 @@ public class MemberController {
             member.setKarma(memberDetails.getKarma());
             member.setHasPet(memberDetails.getHasPet());
 
-            // Set pronouns, default to OTHER if null
             if (memberDetails.getPronouns() != null) {
                 member.setPronouns(memberDetails.getPronouns());
             } else {

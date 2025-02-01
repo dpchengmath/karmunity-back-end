@@ -2,8 +2,8 @@ package com.karmunity.repositories;
 
 import com.karmunity.models.Karmunity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import java.util.Optional;
 
-@Repository
 public interface KarmunityRepository extends JpaRepository<Karmunity, Long> {
+    Optional<Karmunity> findByKarmunityName(String karmunityName);
 }
