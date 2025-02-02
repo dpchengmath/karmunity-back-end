@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface KarmunityRepository extends JpaRepository<Karmunity, Long> {
-    Optional<Karmunity> findByKarmunityName(String karmunityName);
+    Optional<Karmunity> findByKarmunityNameIgnoreCase(String karmunityName);
 }

@@ -1,4 +1,5 @@
 package com.karmunity.models;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.karmunity.models.Pronouns;
 
 import lombok.Data;
@@ -34,12 +35,14 @@ public class Member {
 
     @NotNull
     @Email
+    @Column(unique = true)
     private String email;
 
     @NotNull
     private LocalDate birthday;
 
     @NotNull
+    @Column(unique = true)
     private String username;
 
     @NotNull
@@ -63,7 +66,12 @@ public class Member {
             joinColumns = @JoinColumn(name = "member_id"),
             inverseJoinColumns = @JoinColumn(name = "karmunity_id")
     )
+    @JsonBackReference
     private List<Karmunity> karmunities = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "karmunity_id")
+    private Karmunity karmunity;
 
     @OneToMany(mappedBy = "sender")
     private List<KarmunityInvitation> sentInvitations = new ArrayList<>();

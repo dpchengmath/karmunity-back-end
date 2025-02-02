@@ -86,6 +86,12 @@ public class MemberController {
     // Create a new member
     @PostMapping
     public ResponseEntity<?> createMember(@RequestBody Member memberDetails) {
+        // Check if the username already exists
+        Optional<Member> existingMember = memberRepository.findByUsername(memberDetails.getUsername());
+        if (existingMember.isPresent()) {
+            return ResponseEntity.badRequest().body("Username already taken.");
+        }
+
         try {
             Member member = new Member();
 

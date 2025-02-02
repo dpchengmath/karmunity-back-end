@@ -1,5 +1,6 @@
 package com.karmunity.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.karmunity.KarmunityApplication;
 import lombok.Data;
 import java.util.*;
@@ -18,6 +19,7 @@ public class Karmunity {
     private Long id;
 
     @NotNull
+    @Column(unique = true)
     private String karmunityName;
 
     @ManyToMany(mappedBy = "karmunities")
