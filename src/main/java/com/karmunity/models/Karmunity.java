@@ -7,6 +7,7 @@ import java.time.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import org.springframework.boot.SpringApplication;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Data
 @Entity
@@ -20,7 +21,8 @@ public class Karmunity {
     private String karmunityName;
 
     @ManyToMany(mappedBy = "karmunities")
-    private List<Member> members = new ArrayList<>();
+    @JsonIgnore
+    private List<Member> members;
 
     @OneToMany(mappedBy = "karmunity")
     private List<KarmunityInvitation> karmunityInvitations = new ArrayList<>();
