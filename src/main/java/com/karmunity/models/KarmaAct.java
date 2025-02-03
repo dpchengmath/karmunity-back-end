@@ -5,16 +5,18 @@ import lombok.Getter;
 @Getter
 public enum KarmaAct {
     ACCOUNTABILITY(1),
-    COLLABORATION(1),
-    ACT_OF_SERVICE(1),
-    STUDY_BUDDY(1),
+    TEAMWORK(1),
+    SERVICE(1),
     ENCOURAGEMENT(1),
     INSPIRATION(1),
-    REFLECTION(1),
     INITIATIVE(1),
     PATIENCE(1),
     RELIABILITY(1),
     AUTHENTICITY(1),
+    KNOWLEDGE(1),
+    THOGHTFULNESS(1),
+    GENEROSITY(1),
+    PRODUCTIVITY(1),
     OTHER(1);
 
     private final int points;

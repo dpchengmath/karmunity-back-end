@@ -1,4 +1,4 @@
-package com.karmunity.models;
+package com.karmunity.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

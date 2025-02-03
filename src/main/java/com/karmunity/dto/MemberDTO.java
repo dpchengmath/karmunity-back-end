@@ -18,6 +18,7 @@ public class MemberDTO {
     private String email;
     private LocalDate birthday;
     private String username;
+    private String password;
     private String status;
     private Boolean hasPet;
     private int karma;
@@ -33,6 +34,7 @@ public class MemberDTO {
         this.email = member.getEmail();
         this.birthday = member.getBirthday();
         this.username = member.getUsername();
+        this.password = member.getPassword();
         this.status = member.getStatus();
         this.hasPet = member.getHasPet();
         this.karma = member.getKarma();
