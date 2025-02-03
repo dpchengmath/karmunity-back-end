@@ -1,5 +1,6 @@
 package com.karmunity.controllers;
 
+import com.karmunity.dto.MemberDTO;
 import com.karmunity.models.Member;
 import com.karmunity.models.Pronouns;
 import com.karmunity.repositories.KarmunityRepository;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/members")
@@ -24,29 +26,29 @@ public class MemberController {
     private KarmunityRepository karmunityRepository;
 
     @GetMapping
-    public ResponseEntity<List<Member>> searchMembers(
+    public ResponseEntity<List<MemberDTO>> searchMembers(
             @RequestParam(required = false) String username,
             @RequestParam(required = false) Long id) {
 
         List<Member> members = new ArrayList<>();
 
-        // If username is provided, search by username
         if (username != null && !username.isEmpty()) {
             Optional<Member> member = memberRepository.findByUsername(username);
             member.ifPresent(members::add);
         }
-        // If id is provided, search by id
         else if (id != null) {
             Optional<Member> member = memberRepository.findById(id);
             member.ifPresent(members::add);
         }
-        // If neither username nor id is provided, return all members
         else {
             members = memberRepository.findAll();
         }
 
         if (!members.isEmpty()) {
-            return ResponseEntity.ok(members);
+            List<MemberDTO> response = members.stream()
+                    .map(MemberDTO::new)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.notFound().build();
         }

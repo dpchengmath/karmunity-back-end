@@ -1,14 +1,11 @@
 package com.karmunity.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.karmunity.KarmunityApplication;
-import lombok.Data;
-import java.util.*;
-import java.time.*;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import org.springframework.boot.SpringApplication;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -23,9 +20,10 @@ public class Karmunity {
     private String karmunityName;
 
     @ManyToMany(mappedBy = "karmunities")
-    @JsonIgnore
-    private List<Member> members;
+    @JsonManagedReference
+    private List<Member> members = new ArrayList<>();
 
     @OneToMany(mappedBy = "karmunity")
     private List<KarmunityInvitation> karmunityInvitations = new ArrayList<>();
+
 }

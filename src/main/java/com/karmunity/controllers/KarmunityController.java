@@ -1,5 +1,6 @@
 package com.karmunity.controllers;
 
+import com.karmunity.dto.KarmunityDTO;
 import com.karmunity.models.Karmunity;
 import com.karmunity.repositories.KarmunityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/karmunities")
@@ -19,25 +21,24 @@ public class KarmunityController {
     // Create a new Karmunity
     @PostMapping
     public ResponseEntity<Karmunity> createKarmunity(@RequestBody Karmunity karmunity) {
-        // Check if the Karmunity name already exists
-        Optional<Karmunity> existingKarmunity = karmunityRepository.findByKarmunityNameIgnoreCase(karmunity.getKarmunityName());
-        if (existingKarmunity.isPresent()) {
-            return ResponseEntity.badRequest().body(null); // Return a 400 Bad Request if name exists
-        }
-
         Karmunity savedKarmunity = karmunityRepository.save(karmunity);
         return ResponseEntity.ok(savedKarmunity);
     }
 
-    // Get all Karmunities or filter by karmunityName
     @GetMapping
-    public ResponseEntity<List<Karmunity>> getKarmunities(@RequestParam(required = false) String karmunity) {
+    public ResponseEntity<List<KarmunityDTO>> getKarmunities(@RequestParam(required = false) String karmunity) {
+        List<Karmunity> karmunities;
+
         if (karmunity != null && !karmunity.isEmpty()) {
-            Optional<Karmunity> foundKarmunity = karmunityRepository.findByKarmunityNameIgnoreCase(karmunity);
-            return foundKarmunity.map(k -> ResponseEntity.ok(List.of(k)))
-                    .orElseGet(() -> ResponseEntity.notFound().build());
+            karmunities = karmunityRepository.findByKarmunityNameIgnoreCase(karmunity);
+        } else {
+            karmunities = karmunityRepository.findAll();
         }
-        return ResponseEntity.ok(karmunityRepository.findAll());
+
+        List<KarmunityDTO> response = karmunities.stream()
+                .map(KarmunityDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(response);
     }
 
     // Get a Karmunity by ID
@@ -48,30 +49,6 @@ public class KarmunityController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Get Karmunity by Name
-    @GetMapping("/name/{karmunityName}")
-    public ResponseEntity<Karmunity> getKarmunityByName(@PathVariable String karmunityName) {
-        Optional<Karmunity> karmunity = karmunityRepository.findByKarmunityNameIgnoreCase(karmunityName);
-        return karmunity.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    // Get a Karmunity by Name with its Members
-    @GetMapping("/{karmunityName}/members")
-    public ResponseEntity<Karmunity> getKarmunityWithMembers(@PathVariable String karmunityName) {
-        Optional<Karmunity> karmunity = karmunityRepository.findByKarmunityNameIgnoreCase(karmunityName);
-
-        if (karmunity.isPresent()) {
-            // Accessing the Karmunity and its members
-            Karmunity karmunityWithMembers = karmunity.get();
-
-            // This will automatically include the members from the @ManyToMany relationship
-            return ResponseEntity.ok(karmunityWithMembers);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
     // Update a Karmunity
     @PutMapping("/{id}")
     public ResponseEntity<Karmunity> updateKarmunity(@PathVariable Long id, @RequestBody Karmunity karmunityDetails) {
@@ -80,9 +57,7 @@ public class KarmunityController {
             return ResponseEntity.notFound().build();
         }
         Karmunity karmunity = optionalKarmunity.get();
-
         karmunity.setKarmunityName(karmunityDetails.getKarmunityName());
-
         karmunityRepository.save(karmunity);
         return ResponseEntity.ok(karmunity);
     }

@@ -1,17 +1,13 @@
 package com.karmunity.models;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.karmunity.models.Pronouns;
 
-import lombok.Data;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.jetbrains.annotations.NotNull;
+import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -66,12 +62,8 @@ public class Member {
             joinColumns = @JoinColumn(name = "member_id"),
             inverseJoinColumns = @JoinColumn(name = "karmunity_id")
     )
-    @JsonBackReference
+    @JsonIgnore
     private List<Karmunity> karmunities = new ArrayList<>();
-
-    @ManyToOne
-    @JoinColumn(name = "karmunity_id")
-    private Karmunity karmunity;
 
     @OneToMany(mappedBy = "sender")
     private List<KarmunityInvitation> sentInvitations = new ArrayList<>();
