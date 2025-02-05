@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -52,8 +53,33 @@ public class Member {
     @Getter
     private int karma = 0;
 
-    public void addKarma(KarmaAct karmaAct) {
-        this.karma += karmaAct.getPoints();
+    // Ensure only one field for karmaStats
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private KarmaStats karmaStats;
+
+    // Karma logic
+    public void addKarma(KarmaAct karmaAct, int points) {
+        if (this.karmaStats == null) {
+            this.karmaStats = new KarmaStats();
+        }
+
+        switch (karmaAct) {
+            case ACCOUNTABILITY -> karmaStats.setACCOUNTABILITY(karmaStats.getACCOUNTABILITY() + points);
+            case TEAMWORK -> karmaStats.setTEAMWORK(karmaStats.getTEAMWORK() + points);
+            case SERVICE -> karmaStats.setSERVICE(karmaStats.getSERVICE() + points);
+            case ENCOURAGEMENT -> karmaStats.setENCOURAGEMENT(karmaStats.getENCOURAGEMENT() + points);
+            case INSPIRATION -> karmaStats.setINSPIRATION(karmaStats.getINSPIRATION() + points);
+            case INITIATIVE -> karmaStats.setINITIATIVE(karmaStats.getINITIATIVE() + points);
+            case PATIENCE -> karmaStats.setPATIENCE(karmaStats.getPATIENCE() + points);
+            case RELIABILITY -> karmaStats.setRELIABILITY(karmaStats.getRELIABILITY() + points);
+            case AUTHENTICITY -> karmaStats.setAUTHENTICITY(karmaStats.getAUTHENTICITY() + points);
+            case KNOWLEDGE -> karmaStats.setKNOWLEDGE(karmaStats.getKNOWLEDGE() + points);
+            case THOUGHTFULNESS -> karmaStats.setTHOUGHTFULNESS(karmaStats.getTHOUGHTFULNESS() + points);
+            case GENEROSITY -> karmaStats.setGENEROSITY(karmaStats.getGENEROSITY() + points);
+            case PRODUCTIVITY -> karmaStats.setPRODUCTIVITY(karmaStats.getPRODUCTIVITY() + points);
+            case QUALITY_TIME -> karmaStats.setQUALITY_TIME(karmaStats.getQUALITY_TIME() + points);
+            case OTHER -> karmaStats.setOTHER(karmaStats.getOTHER() + points);
+        }
     }
 
     @ManyToMany

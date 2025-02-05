@@ -1,6 +1,7 @@
 package com.karmunity.controllers;
 
 import com.karmunity.dto.MemberDTO;
+import com.karmunity.models.KarmaAct;
 import com.karmunity.models.Member;
 import com.karmunity.models.Pronouns;
 import com.karmunity.repositories.KarmunityRepository;
@@ -35,12 +36,10 @@ public class MemberController {
         if (username != null && !username.isEmpty()) {
             Optional<Member> member = memberRepository.findByUsername(username);
             member.ifPresent(members::add);
-        }
-        else if (id != null) {
+        } else if (id != null) {
             Optional<Member> member = memberRepository.findById(id);
             member.ifPresent(members::add);
-        }
-        else {
+        } else {
             members = memberRepository.findAll();
         }
 
@@ -88,7 +87,6 @@ public class MemberController {
     // Create a new member
     @PostMapping
     public ResponseEntity<?> createMember(@RequestBody Member memberDetails) {
-        // Check if the username already exists
         Optional<Member> existingMember = memberRepository.findByUsername(memberDetails.getUsername());
         if (existingMember.isPresent()) {
             return ResponseEntity.badRequest().body("Username already taken.");
@@ -151,6 +149,21 @@ public class MemberController {
         }
 
         return ResponseEntity.notFound().build();
+    }
+
+    // Update a member's karma
+    @PutMapping("/{id}/karma")
+    public ResponseEntity<Member> updateKarma(@PathVariable Long id, @RequestParam KarmaAct karmaAct, @RequestParam int points) {
+        Optional<Member> optionalMember = memberRepository.findById(id);
+        if (optionalMember.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Member member = optionalMember.get();
+        member.addKarma(karmaAct, points);
+        memberRepository.save(member);
+
+        return ResponseEntity.ok(member);
     }
 
     // Delete a member

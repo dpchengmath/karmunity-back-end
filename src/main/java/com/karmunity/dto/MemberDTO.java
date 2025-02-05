@@ -1,15 +1,17 @@
 package com.karmunity.dto;
 
-import com.karmunity.models.Karmunity;
 import com.karmunity.models.Member;
+import com.karmunity.models.Karmunity;
 import com.karmunity.models.Pronouns;
 import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
+@JsonPropertyOrder({"id", "firstName", "lastName", "pronouns", "email", "birthday", "username", "password", "status", "hasPet", "karma", "karmaStats", "karmunities", "sentInvitations", "receivedInvitations"})
 public class MemberDTO {
     private Long id;
     private String firstName;
@@ -22,6 +24,7 @@ public class MemberDTO {
     private String status;
     private Boolean hasPet;
     private int karma;
+    private KarmaStatsDTO karmaStats;
     private List<String> karmunities;
     private List<KarmunityInvitationDTO> sentInvitations;
     private List<KarmunityInvitationDTO> receivedInvitations;
@@ -37,14 +40,13 @@ public class MemberDTO {
         this.password = member.getPassword();
         this.status = member.getStatus();
         this.hasPet = member.getHasPet();
+
         this.karma = member.getKarma();
 
-        // Extract only karmunity names
         this.karmunities = member.getKarmunities().stream()
                 .map(Karmunity::getKarmunityName)
                 .collect(Collectors.toList());
 
-        // Convert invitations with renamed key
         this.sentInvitations = member.getSentInvitations().stream()
                 .map(KarmunityInvitationDTO::new)
                 .collect(Collectors.toList());
@@ -52,5 +54,9 @@ public class MemberDTO {
         this.receivedInvitations = member.getReceivedInvitations().stream()
                 .map(KarmunityInvitationDTO::new)
                 .collect(Collectors.toList());
+
+        this.karmaStats = member.getKarmaStats() != null ?
+                new KarmaStatsDTO(member.getKarmaStats()) :
+                new KarmaStatsDTO();
     }
 }

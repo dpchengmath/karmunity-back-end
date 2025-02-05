@@ -14,9 +14,10 @@ public enum KarmaAct {
     RELIABILITY(1),
     AUTHENTICITY(1),
     KNOWLEDGE(1),
-    THOGHTFULNESS(1),
+    THOUGHTFULNESS(1),
     GENEROSITY(1),
     PRODUCTIVITY(1),
+    QUALITY_TIME(1),
     OTHER(1);
 
     private final int points;
