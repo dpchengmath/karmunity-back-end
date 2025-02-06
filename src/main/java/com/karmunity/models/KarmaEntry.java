@@ -5,9 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@Data
 @Entity
 @Table(name = "karma_entry")
 public class KarmaEntry {
@@ -18,23 +16,37 @@ public class KarmaEntry {
 
     @Getter
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "karma_act")
+    @Column(nullable = false)
     private KarmaAct karmaAct;
 
     @Getter
     @Column(nullable = false)
-    private int points;
+    private int karma;
 
     @Setter
     @ManyToOne
-    @JoinColumn(name = "karma_stats_id", nullable = false)
+    @JoinColumn(name = "karma_giver_id", nullable = false)
+    private Member karmaGiver;
+
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "karma_receiver_id", nullable = false)
+    private Member karmaReceiver;
+
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "karma_stats_id")
     private KarmaStats karmaStats;
 
+    // Constructor
     public KarmaEntry() {
     }
 
-    public KarmaEntry(KarmaAct karmaAct, int points) {
+    public KarmaEntry(KarmaAct karmaAct, int karma, Member karmaGiver, Member karmaReceiver) {
         this.karmaAct = karmaAct;
-        this.points = points;
+        this.karma = karma;
+        this.karmaGiver = karmaGiver;
+        this.karmaReceiver = karmaReceiver;
     }
 }
+

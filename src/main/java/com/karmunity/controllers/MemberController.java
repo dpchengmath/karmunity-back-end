@@ -2,10 +2,14 @@ package com.karmunity.controllers;
 
 import com.karmunity.dto.MemberDTO;
 import com.karmunity.models.KarmaAct;
+import com.karmunity.models.KarmaEntry;
+import com.karmunity.models.KarmaStats;
 import com.karmunity.models.Member;
 import com.karmunity.models.Pronouns;
 import com.karmunity.repositories.KarmunityRepository;
 import com.karmunity.repositories.MemberRepository;
+import com.karmunity.repositories.KarmaStatsRepository;
+import com.karmunity.repositories.KarmaEntryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +29,12 @@ public class MemberController {
 
     @Autowired
     private KarmunityRepository karmunityRepository;
+
+    @Autowired
+    private KarmaStatsRepository karmaStatsRepository;
+
+    @Autowired
+    private KarmaEntryRepository karmaEntryRepository;
 
     @GetMapping
     public ResponseEntity<List<MemberDTO>> searchMembers(
@@ -122,6 +132,45 @@ public class MemberController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    // Endpoint to give karma
+    @PostMapping("/give-karma")
+    public ResponseEntity<String> giveKarma(@RequestBody KarmaEntry karmaEntry) {
+        // Find the karma receiver by ID
+        Optional<Member> karmaReceiverOpt = memberRepository.findById(karmaEntry.getKarmaReceiver().getId());
+        if (!karmaReceiverOpt.isPresent()) {
+            return ResponseEntity.badRequest().body("Karma receiver not found");
+        }
+
+        Member karmaReceiver = karmaReceiverOpt.get();
+        KarmaStats karmaStats = karmaReceiver.getKarmaStats();
+
+        // If karmaStats doesn't exist, create it
+        if (karmaStats == null) {
+            karmaStats = new KarmaStats();
+            karmaStats.setMember(karmaReceiver);
+            karmaReceiver.setKarmaStats(karmaStats);
+        }
+
+        // Use the custom fromString method for case-insensitive matching
+        KarmaAct karmaAct;
+        try {
+            karmaAct = KarmaAct.fromString(String.valueOf(karmaEntry.getKarmaAct()));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Invalid Karma Act");
+        }
+
+        // Increment the appropriate karma act based on the entry
+        karmaStats.addKarma(karmaAct, karmaEntry.getKarma());
+
+        // Save the updated KarmaStats and KarmaEntry
+        karmaStatsRepository.save(karmaStats);
+        karmaEntry.setKarmaStats(karmaStats);
+        karmaEntryRepository.save(karmaEntry);
+
+        return ResponseEntity.ok("Karma successfully given");
+    }
+
 
     // Update a member
     @PutMapping("/{id}")

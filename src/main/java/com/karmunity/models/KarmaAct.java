@@ -26,12 +26,15 @@ public enum KarmaAct {
         this.points = points;
     }
 
-    public static KarmaAct fromString(String value) {
-        for (KarmaAct act : KarmaAct.values()) {
-            if (act.name().equalsIgnoreCase(value)) {
-                return act;
+    // Custom method to map a string to a KarmaAct enum case-insensitively
+    public static KarmaAct fromString(String karmaActStr) {
+        for (KarmaAct karmaAct : KarmaAct.values()) {
+            if (karmaAct.name().equalsIgnoreCase(karmaActStr)) {
+                return karmaAct;
             }
         }
-        return OTHER;
+        throw new IllegalArgumentException("Invalid Karma Act: " + karmaActStr);
     }
 }
+
+
