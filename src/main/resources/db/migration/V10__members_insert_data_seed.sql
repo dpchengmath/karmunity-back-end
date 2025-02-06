@@ -1,0 +1,22 @@
+INSERT INTO member (id, first_name, last_name, pronouns, email, birthday, username, password, status, has_pet, karma)
+VALUES
+    (DEFAULT, 'Denise', 'Cheng', 'SHE_HER', 'denise.cheng@gmail.com', '1990-01-23', 'denise_cheng', 'postgres', '\"Excited for Lunar New Year!\"', false, 0),
+    (DEFAULT, 'Lula', 'San', 'SHE_HER', 'lula.san@gmail.com', '1990-01-20', 'lula_san', 'postgres', '\"Working magic on capstone project!\"', false, 0),
+    (DEFAULT, 'Tatyana', 'Venanzi', 'SHE_HER', 'tatyana.venanzi@gmail.com', '1990-01-20', 'tatyana_venanzi', 'postgres', '\"Working magic on capstone project!\"', false, 0),
+    (DEFAULT, 'Beenish', 'Ali', 'SHE_HER', 'beenish.ali@gmail.com', '1990-01-20', 'beenish_ali', 'postgres', '\"Working magic on capstone project!\"', false, 0),
+    (DEFAULT, 'Izzy', 'Hirad', 'SHE_HER', 'izzy.hirad@gmail.com', '1990-01-20', 'izzy_hirad', 'postgres', '\"Working magic on capstone project!\"', false, 0),
+    (DEFAULT, 'Alejandra', 'Guevara', 'SHE_HER', 'alejandra.guevara@gmail.com', '1990-01-20', 'alejandra_guevara', 'postgres', '\"Working magic on capstone project!\"', false, 0),
+    (DEFAULT, 'Sunitha', 'Nela', 'SHE_HER', 'sunitha.nela@gmail.com', '1990-01-20', 'sunitha_nela', 'postgres', '\"Working magic on capstone project!\"', false, 0),
+    (DEFAULT, 'Madeline', 'Bennett', 'SHE_HER', 'madeline.bennett@gmail.com', '1990-01-20', 'madeline_bennett', 'postgres', '\"Working magic on capstone project!\"', false, 0),
+    (DEFAULT, 'Marjana', 'Khatun', 'SHE_HER', 'marjana.khatun@gmail.com', '1990-01-20', 'marjana_khatun', 'postgres', '\"Working magic on capstone project!\"', false, 0),
+    (DEFAULT, 'Anees', 'Quateja', 'SHE_HER', 'anees.quateja@gmail.com', '1990-01-20', 'anees_quateja', 'postgres', '\"Working magic on capstone project!\"', false, 0),
+    (DEFAULT, 'Anh', 'Tran', 'SHE_HER', 'anh.tran@gmail.com', '1990-01-20', 'anh_tran', 'postgres', '\"Working magic on capstone project!\"', false, 0),
+    (DEFAULT, 'Charday', 'Neal', 'SHE_HER', 'charday.neal@gmail.com', '1990-01-20', 'charday_neal', 'postgres', '\"Working magic on capstone project!\"', false, 0),
+    (DEFAULT, 'Astry', 'Brana', 'SHE_HER', 'astry.brana@gmail.com', '1990-01-20', 'astry_brana', 'postgres', '\"Working magic on capstone project!\"', false, 0),
+    (DEFAULT, 'Olga', 'karaivanska', 'SHE_HER', 'olga.karaivanska@gmail.com', '1990-01-20', 'olga_karaivanska', 'postgres', '\"Working magic on capstone project!\"', false, 0),
+    (DEFAULT, 'Lorraine', 'Shi', 'SHE_HER', 'lorraine.shi@gmail.com', '1990-01-20', 'lorraine_shi', 'postgres', '\"Working magic on capstone project!\"', false, 0),
+    (DEFAULT, 'Ashley', 'Yang', 'SHE_HER', 'ashley.yang@gmail.com', '1990-01-20', 'ashley_yang', 'postgres', '\"Instructing c22 Adies!\"', false, 0),
+    (DEFAULT, 'Ansel', 'Rognlie', 'HE_HIM', 'ansel.rognlie@gmail.com', '1990-01-20', 'ansel_rognlie', 'postgres', '\"Instructing c22 Adies!\"', false, 0),
+    (DEFAULT, 'Adrian', 'Prado', 'HE_HIM', 'adrian.prado@gmail.com', '1990-01-20', 'adrian_prado', 'postgres', '\"Instructing c22 Adies!\"', false, 0),
+    (DEFAULT, 'Mikelle', 'Wade', 'THEY_THEM', 'mikelle.wade@gmail.com', '1990-01-20', 'mikelle_wade', 'postgres', '\"Instructing c22 Adies!\"', false, 0),
+    (DEFAULT, 'Kelsey', 'Steven', 'THEY_THEM', 'kelsey.steven@gmail.com', '1990-01-20', 'kelsey_steven', 'postgres', '\"Instructing c22 Adies!\"', false, 0);

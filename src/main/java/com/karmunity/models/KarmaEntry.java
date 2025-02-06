@@ -18,7 +18,7 @@ public class KarmaEntry {
 
     @Getter
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "karma_act")
     private KarmaAct karmaAct;
 
     @Getter

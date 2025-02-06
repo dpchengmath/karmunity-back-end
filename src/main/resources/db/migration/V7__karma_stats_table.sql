@@ -18,4 +18,3 @@ CREATE TABLE karma_stats (
     OTHER INT DEFAULT 0,
     FOREIGN KEY (member_id) REFERENCES member(id) ON DELETE CASCADE
 );
-
