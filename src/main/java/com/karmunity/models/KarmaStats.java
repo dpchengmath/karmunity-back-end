@@ -1,10 +1,15 @@
 package com.karmunity.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Data
 @Entity
+@JsonPropertyOrder({"Id", "memberId", "karma", "ACCOUNTABILITY", "TEAMWORK", "SERVICE", "ENCOURAGEMENT",
+        "INSPIRATION", "INITIATIVE", "PATIENCE", "RELIABILITY", "AUTHENTICITY", "KNOWLEDGE",
+        "THOUGHTFULNESS", "GENEROSITY", "PRODUCTIVITY", "QUALITY_TIME", "OTHER"})
 public class KarmaStats {
 
     @Id
@@ -13,6 +18,7 @@ public class KarmaStats {
 
     @OneToOne
     @JoinColumn(name = "member_id")
+    @JsonIgnore
     private Member member;
 
     private int ACCOUNTABILITY;
@@ -31,8 +37,13 @@ public class KarmaStats {
     private int QUALITY_TIME;
     private int OTHER;
 
+    @Override
+    public String toString() {
+        return "KarmaStats{id=" + id + ", totalKarma=" + getKarma() + "}";
+    }
+
     // Calculate the total karma points across all categories
-    public int getTotalKarma() {
+    public int getKarma() {
         return ACCOUNTABILITY + TEAMWORK + SERVICE + ENCOURAGEMENT + INSPIRATION + INITIATIVE +
                 PATIENCE + RELIABILITY + AUTHENTICITY + KNOWLEDGE + THOUGHTFULNESS + GENEROSITY +
                 PRODUCTIVITY + QUALITY_TIME + OTHER;
