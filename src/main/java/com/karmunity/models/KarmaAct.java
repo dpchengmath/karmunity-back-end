@@ -1,8 +1,5 @@
 package com.karmunity.models;
 
-import lombok.Getter;
-
-@Getter
 public enum KarmaAct {
     ACCOUNTABILITY(1),
     TEAMWORK(1),
@@ -26,8 +23,11 @@ public enum KarmaAct {
         this.points = points;
     }
 
-    // Custom method to map a string to a KarmaAct enum case-insensitively
     public static KarmaAct fromString(String karmaActStr) {
+        if (karmaActStr == null) {
+            throw new IllegalArgumentException("Invalid Karma Act: null");
+        }
+        karmaActStr = karmaActStr.trim();
         for (KarmaAct karmaAct : KarmaAct.values()) {
             if (karmaAct.name().equalsIgnoreCase(karmaActStr)) {
                 return karmaAct;
@@ -36,5 +36,3 @@ public enum KarmaAct {
         throw new IllegalArgumentException("Invalid Karma Act: " + karmaActStr);
     }
 }
-
-

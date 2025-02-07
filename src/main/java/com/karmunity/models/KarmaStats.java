@@ -21,6 +21,7 @@ public class KarmaStats {
     @JsonIgnore
     private Member member;
 
+    private int total_karma;
     private int ACCOUNTABILITY;
     private int TEAMWORK;
     private int SERVICE;
