@@ -4,6 +4,7 @@ import com.karmunity.dto.MemberDTO;
 import com.karmunity.models.*;
 import com.karmunity.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,6 +49,70 @@ public class MemberController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    // Create a new member
+    @PostMapping("")
+    public ResponseEntity<?> createMember(@RequestBody Member memberDetails) {
+        try {
+            Member member = new Member();
+
+            // Ensure hasPet is not null
+            if (memberDetails.getHasPet() == null) {
+                member.setHasPet(false);  // Default to false if null
+            } else {
+                member.setHasPet(memberDetails.getHasPet());
+            }
+
+            // Set other fields from memberDetails
+            member.setFirstName(memberDetails.getFirstName());
+            member.setLastName(memberDetails.getLastName());
+            member.setEmail(memberDetails.getEmail());
+            member.setBirthday(memberDetails.getBirthday());
+            member.setUsername(memberDetails.getUsername());
+            member.setPassword(memberDetails.getPassword());
+            member.setStatus(memberDetails.getStatus());
+            member.setKarma(memberDetails.getKarma());
+
+            if (memberDetails.getPronouns() == null) {
+                member.setPronouns(Pronouns.OTHER);  // Default to "other" if no pronouns are provided
+            } else {
+                member.setPronouns(memberDetails.getPronouns());
+            }
+
+            memberRepository.save(member);
+            return ResponseEntity.ok(member);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // Update a member
+    @PutMapping("/{id}")
+    public ResponseEntity<Member> updateMember(@PathVariable Long id, @RequestBody Member memberDetails) {
+        Optional<Member> existingMember = memberRepository.findById(id);
+
+        if (existingMember.isPresent()) {
+            Member member = existingMember.get();
+
+            member.setFirstName(memberDetails.getFirstName());
+            member.setLastName(memberDetails.getLastName());
+            member.setEmail(memberDetails.getEmail());
+            member.setStatus(memberDetails.getStatus());
+            member.setKarma(memberDetails.getKarma());
+            member.setHasPet(memberDetails.getHasPet());
+
+            if (memberDetails.getPronouns() != null) {
+                member.setPronouns(memberDetails.getPronouns());
+            } else {
+                member.setPronouns(Pronouns.OTHER);
+            }
+
+            memberRepository.save(member);
+            return ResponseEntity.ok(member);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
     @PostMapping("/give-karma")
     public ResponseEntity<String> giveKarma(@RequestBody KarmaEntry karmaEntry) {
         Optional<Member> receiverOpt = memberRepository.findById(karmaEntry.getKarmaReceiver().getId());
@@ -72,7 +137,11 @@ public class MemberController {
     }
 
     @PutMapping("/{id}/karma")
-    public ResponseEntity<KarmaStats> updateKarma(@PathVariable Long id, @RequestParam KarmaAct karmaAct, @RequestParam int points) {
+    public ResponseEntity<KarmaStats> updateKarma(
+            @PathVariable Long id,
+            @RequestParam KarmaAct karmaAct,
+            @RequestParam int points) {
+
         Optional<KarmaStats> optionalStats = karmaStatsRepository.findByMemberId(id);
         if (optionalStats.isEmpty()) {
             return ResponseEntity.notFound().build();
