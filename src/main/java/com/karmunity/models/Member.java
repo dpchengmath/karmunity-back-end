@@ -48,10 +48,6 @@ public class Member {
 
     private Boolean hasPet = false;
 
-    @Setter
-    @Getter
-    private int karma = 0;
-
     // Ensure only one field for karmaStats
     @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private KarmaStats karmaStats;

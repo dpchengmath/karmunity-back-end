@@ -41,8 +41,6 @@ public class MemberDTO {
         this.status = member.getStatus();
         this.hasPet = member.getHasPet();
 
-        this.karma = member.getKarma();
-
         this.karmunities = member.getKarmunities().stream()
                 .map(Karmunity::getKarmunityName)
                 .collect(Collectors.toList());

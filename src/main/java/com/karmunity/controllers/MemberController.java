@@ -70,7 +70,6 @@ public class MemberController {
             member.setUsername(memberDetails.getUsername());
             member.setPassword(memberDetails.getPassword());
             member.setStatus(memberDetails.getStatus());
-            member.setKarma(memberDetails.getKarma());
 
             if (memberDetails.getPronouns() == null) {
                 member.setPronouns(Pronouns.OTHER);  // Default to "other" if no pronouns are provided
@@ -97,7 +96,6 @@ public class MemberController {
             member.setLastName(memberDetails.getLastName());
             member.setEmail(memberDetails.getEmail());
             member.setStatus(memberDetails.getStatus());
-            member.setKarma(memberDetails.getKarma());
             member.setHasPet(memberDetails.getHasPet());
 
             if (memberDetails.getPronouns() != null) {
