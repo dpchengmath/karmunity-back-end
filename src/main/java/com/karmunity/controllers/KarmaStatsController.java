@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.List;  // Add this import
 import java.util.Optional;
 
 @RestController
@@ -23,26 +23,26 @@ public class KarmaStatsController {
 
     // Get all KarmaStats records
     @GetMapping
-    public List<KarmaStats> getAllKarmaStats() {
-        List<KarmaStats> stats = karmaStatsRepository.findAll();
-        System.out.println("Fetched KarmaStats: " + stats);
-        return stats;
+    public ResponseEntity<List<KarmaStats>> getAllKarmaStats() {
+        return ResponseEntity.ok(karmaStatsRepository.findAll());
     }
 
-    // Get a single KarmaStats record by member ID
+    // Get KarmaStats by member ID
     @GetMapping("/{memberId}")
     public ResponseEntity<KarmaStats> getKarmaStatsByMemberId(@PathVariable Long memberId) {
         Optional<KarmaStats> karmaStats = karmaStatsRepository.findByMemberId(memberId);
         return karmaStats.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/give-karma")
+    // POST method to give karma to a member
+    @PostMapping
     public ResponseEntity<KarmaEntry> giveKarma(@RequestBody KarmaEntry karmaEntry) {
-        // Check if KarmaStats exists for the receiver
+        // Ensure that the receiver's KarmaStats exists
         Optional<KarmaStats> karmaStatsOptional = karmaStatsRepository.findByMemberId(karmaEntry.getKarmaReceiver().getId());
         KarmaStats karmaStats;
 
         if (karmaStatsOptional.isPresent()) {
+            // KarmaStats exists, update the karma
             karmaStats = karmaStatsOptional.get();
         } else {
             // If KarmaStats doesn't exist, create a new one
@@ -50,17 +50,19 @@ public class KarmaStatsController {
             karmaStats.setMember(karmaEntry.getKarmaReceiver());
         }
 
-        // Update the karma stats with the karma points
+        // Update the karma points in the KarmaStats object
         karmaStats.addKarma(karmaEntry.getKarmaAct(), karmaEntry.getKarma());
 
-        // Save the KarmaStats
+        // Save the updated KarmaStats
         karmaStatsRepository.save(karmaStats);
 
-        // Save the KarmaEntry
+        // Link the KarmaEntry to the updated KarmaStats
         karmaEntry.setKarmaStats(karmaStats);
+
+        // Save the KarmaEntry to record the action
         karmaEntryRepository.save(karmaEntry);
 
-        // Return the KarmaEntry with a 201 status code
+        // Return the saved KarmaEntry with a 201 status code
         return ResponseEntity.status(201).body(karmaEntry);
     }
 }

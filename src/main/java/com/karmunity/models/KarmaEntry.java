@@ -21,6 +21,10 @@ public class KarmaEntry {
 
     @Getter
     @Column(nullable = false)
+    private String kudos;
+
+    @Getter
+    @Column(nullable = false)
     private int karma;
 
     @Setter
@@ -42,8 +46,9 @@ public class KarmaEntry {
     public KarmaEntry() {
     }
 
-    public KarmaEntry(KarmaAct karmaAct, int karma, Member karmaGiver, Member karmaReceiver) {
+    public KarmaEntry(KarmaAct karmaAct, String kudos, int karma, Member karmaGiver, Member karmaReceiver) {
         this.karmaAct = karmaAct;
+        this.kudos = kudos;
         this.karma = karma;
         this.karmaGiver = karmaGiver;
         this.karmaReceiver = karmaReceiver;
