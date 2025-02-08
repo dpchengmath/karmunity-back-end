@@ -1,25 +1,53 @@
 package com.karmunity.controllers;
 
+import com.karmunity.dto.KarmaEntryResponseDTO;
+import com.karmunity.dto.MemberSummaryDTO;
 import com.karmunity.models.KarmaEntry;
 import com.karmunity.models.KarmaStats;
 import com.karmunity.repositories.KarmaEntryRepository;
 import com.karmunity.repositories.KarmaStatsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;  // Add this import
+import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/karma")
-public class KarmaStatsController {
+public class KarmaController {
+
+    @Autowired
+    private KarmaEntryRepository karmaEntryRepository;
 
     @Autowired
     private KarmaStatsRepository karmaStatsRepository;
 
-    @Autowired
-    private KarmaEntryRepository karmaEntryRepository;
+    // Get KarmaEntry by karma entry ID
+    @GetMapping("/give-karma/{karmaEntryId}")
+    public ResponseEntity<KarmaEntryResponseDTO> getKarmaEntry(@PathVariable Long karmaEntryId) {
+        KarmaEntry karmaEntry = karmaEntryRepository.findById(karmaEntryId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "KarmaEntry not found"));
+
+        // Convert Member to MemberSummaryDTO
+        MemberSummaryDTO karmaGiverDTO = new MemberSummaryDTO(karmaEntry.getKarmaGiver());
+        MemberSummaryDTO karmaReceiverDTO = new MemberSummaryDTO(karmaEntry.getKarmaReceiver());
+
+        // Convert KarmaEntry to DTO
+        KarmaEntryResponseDTO responseDTO = new KarmaEntryResponseDTO(
+                karmaEntry.getId(),
+                karmaEntry.getKarmaAct().toString(),
+                karmaEntry.getKudos(),
+                karmaEntry.getKarma(),
+                karmaGiverDTO,
+                karmaReceiverDTO,
+                karmaEntry.getKarmaStats()
+        );
+
+        return ResponseEntity.ok(responseDTO);
+    }
 
     // Get all KarmaStats records
     @GetMapping
@@ -28,14 +56,14 @@ public class KarmaStatsController {
     }
 
     // Get KarmaStats by member ID
-    @GetMapping("/{memberId}")
+    @GetMapping("/karma-stats/{memberId}")
     public ResponseEntity<KarmaStats> getKarmaStatsByMemberId(@PathVariable Long memberId) {
         Optional<KarmaStats> karmaStats = karmaStatsRepository.findByMemberId(memberId);
         return karmaStats.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // POST method to give karma to a member
-    @PostMapping
+    @PostMapping("/give-karma")
     public ResponseEntity<KarmaEntry> giveKarma(@RequestBody KarmaEntry karmaEntry) {
         // Ensure that the receiver's KarmaStats exists
         Optional<KarmaStats> karmaStatsOptional = karmaStatsRepository.findByMemberId(karmaEntry.getKarmaReceiver().getId());
