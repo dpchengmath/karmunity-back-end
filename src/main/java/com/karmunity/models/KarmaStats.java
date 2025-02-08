@@ -7,7 +7,7 @@ import lombok.*;
 
 @Data
 @Entity
-@JsonPropertyOrder({"Id", "memberId", "karma", "ACCOUNTABILITY", "TEAMWORK", "SERVICE", "ENCOURAGEMENT",
+@JsonPropertyOrder({"Id", "memberId", "ACCOUNTABILITY", "TEAMWORK", "SERVICE", "ENCOURAGEMENT",
         "INSPIRATION", "INITIATIVE", "PATIENCE", "RELIABILITY", "AUTHENTICITY", "KNOWLEDGE",
         "THOUGHTFULNESS", "GENEROSITY", "PRODUCTIVITY", "QUALITY_TIME", "OTHER"})
 public class KarmaStats {
@@ -21,7 +21,6 @@ public class KarmaStats {
     @JsonIgnore
     private Member member;
 
-    private int total_karma;
     private int ACCOUNTABILITY;
     private int TEAMWORK;
     private int SERVICE;
