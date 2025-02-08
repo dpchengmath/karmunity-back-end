@@ -3,7 +3,6 @@ package com.karmunity.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +19,6 @@ public class Karmunity {
     private String karmunityName;
 
     @ManyToMany(mappedBy = "karmunities")
-    @JsonManagedReference
     private List<Member> members = new ArrayList<>();
 
     @OneToMany(mappedBy = "karmunity")

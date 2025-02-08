@@ -3,6 +3,7 @@ package com.karmunity.configurations;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -16,13 +17,14 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
 @Configuration
 public class SpringSecurityConfiguration {
 
-    /** 🔐 1. Define User Authentication (Instead of inMemoryAuthentication) */
     @Bean
     public UserDetailsService userDetailsService() {
         return new org.springframework.security.provisioning.InMemoryUserDetailsManager(
@@ -37,7 +39,6 @@ public class SpringSecurityConfiguration {
         );
     }
 
-    /** 🔐 2. Define AuthenticationProvider */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -46,23 +47,20 @@ public class SpringSecurityConfiguration {
         return provider;
     }
 
-    /** 🔐 3. AuthenticationManager Bean */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    /** 🔐 4. Password Encoder */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    /** 🌍 5. Define CORS Configuration */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173")); // Update if needed
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173"));
         corsConfiguration.setAllowedMethods(List.of("POST", "GET", "PUT", "PATCH", "DELETE"));
         corsConfiguration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         corsConfiguration.setAllowCredentials(true);
@@ -72,11 +70,10 @@ public class SpringSecurityConfiguration {
         return source;
     }
 
-    /** 🔐 6. Define Security Filter Chain */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.disable())  // Disable CSRF for REST APIs
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/members/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/karmunities/**").permitAll()
@@ -90,10 +87,23 @@ public class SpringSecurityConfiguration {
                         .requestMatchers(HttpMethod.DELETE, "/members/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/karmunities/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/karma/**").authenticated()
-                        .anyRequest().authenticated()  // Secure all other endpoints
+                        .anyRequest().authenticated()
                 )
-                .authenticationProvider(authenticationProvider()) // Use custom authentication provider
-                .httpBasic(httpBasic -> {}) // Enable HTTP Basic authentication
+                .authenticationProvider(authenticationProvider())
+                .httpBasic(httpBasic -> {})
                 .build();
+    }
+
+    /** 🌍 Global Content Negotiation Configuration (Forcing JSON Response) */
+    @Bean
+    public WebMvcConfigurer webMvcConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
+                configurer.favorParameter(false)
+                        .ignoreAcceptHeader(true)
+                        .defaultContentType(MediaType.APPLICATION_JSON);
+            }
+        };
     }
 }
