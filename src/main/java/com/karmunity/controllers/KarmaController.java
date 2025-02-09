@@ -4,6 +4,8 @@ import com.karmunity.dto.KarmaEntryResponseDTO;
 import com.karmunity.dto.MemberSummaryDTO;
 import com.karmunity.models.KarmaEntry;
 import com.karmunity.models.KarmaStats;
+import com.karmunity.models.Member;
+import com.karmunity.repositories.MemberRepository;
 import com.karmunity.repositories.KarmaEntryRepository;
 import com.karmunity.repositories.KarmaStatsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/karma")
@@ -24,6 +27,9 @@ public class KarmaController {
 
     @Autowired
     private KarmaStatsRepository karmaStatsRepository;
+
+    @Autowired
+    private final MemberRepository memberRepository;
 
     // Get KarmaEntry by karma entry ID
     @GetMapping("/give-karma/{karmaEntryId}")
@@ -60,6 +66,24 @@ public class KarmaController {
     public ResponseEntity<KarmaStats> getKarmaStatsByMemberId(@PathVariable Long memberId) {
         Optional<KarmaStats> karmaStats = karmaStatsRepository.findByMemberId(memberId);
         return karmaStats.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    public KarmaController(KarmaEntryRepository karmaEntryRepository, MemberRepository memberRepository) {
+        this.karmaEntryRepository = karmaEntryRepository;
+        this.memberRepository = memberRepository;
+    }
+
+    // Get kudos by username
+    @GetMapping("/kudos/{username}")
+    public List<String> getKudosReceivedByMember(@PathVariable String username) {
+        Member receiver = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+
+        List<KarmaEntry> karmaEntries = karmaEntryRepository.findByKarmaReceiver(receiver);
+
+        return karmaEntries.stream()
+                .map(KarmaEntry::getKudos)
+                .collect(Collectors.toList());
     }
 
     // POST method to give karma to a member
