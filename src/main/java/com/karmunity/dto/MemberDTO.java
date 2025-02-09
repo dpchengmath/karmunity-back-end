@@ -56,5 +56,11 @@ public class MemberDTO {
         this.karmaStats = member.getKarmaStats() != null ?
                 new KarmaStatsDTO(member.getKarmaStats()) :
                 new KarmaStatsDTO();
+
+        if (member.getKarmaStats() != null) {
+            this.karma = member.getKarmaStats().getKarma();
+        } else {
+            this.karma = 0;  // Default to 0 if karmaStats is null
+        }
     }
 }
