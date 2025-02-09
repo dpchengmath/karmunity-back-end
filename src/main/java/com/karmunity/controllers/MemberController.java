@@ -111,7 +111,20 @@ public class MemberController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/give-karma")
+    // Update the status of a specific member
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<Member> updateStatus(@PathVariable Long id, @RequestBody String status) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+
+        member.setStatus(status);
+
+        Member updatedMember = memberRepository.save(member);
+
+        return ResponseEntity.ok(updatedMember);
+    }
+
+@PostMapping("/give-karma")
     public ResponseEntity<String> giveKarma(@RequestBody KarmaEntry karmaEntry) {
         Optional<Member> receiverOpt = memberRepository.findById(karmaEntry.getKarmaReceiver().getId());
         if (receiverOpt.isEmpty()) {
