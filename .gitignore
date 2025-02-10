@@ -64,7 +64,6 @@ build/
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear
@@ -80,3 +79,6 @@ replay_pid*
 .vscode/
 
 src/main/resources/env.properties
+
+# Ignore all JAR files (but not gradle-wrapper.jar)
+*.jar

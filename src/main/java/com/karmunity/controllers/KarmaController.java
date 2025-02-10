@@ -14,7 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -75,14 +77,19 @@ public class KarmaController {
 
     // Get kudos by username
     @GetMapping("/kudos/{username}")
-    public List<String> getKudosReceivedByMember(@PathVariable String username) {
+    public List<Map<String, Object>> getKudosReceivedByMember(@PathVariable String username) {
         Member receiver = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Member not found"));
 
         List<KarmaEntry> karmaEntries = karmaEntryRepository.findByKarmaReceiver(receiver);
 
         return karmaEntries.stream()
-                .map(KarmaEntry::getKudos)
+                .map(karmaEntry -> {
+                    Map<String, Object> response = new HashMap<>();
+                    response.put("kudos", karmaEntry.getKudos());
+                    response.put("karmaGiver", new MemberSummaryDTO(karmaEntry.getKarmaGiver()));
+                    return response;
+                })
                 .collect(Collectors.toList());
     }
 
