@@ -2,12 +2,16 @@ package com.karmunity.controllers;
 
 import com.karmunity.dto.KarmunityDTO;
 import com.karmunity.models.Karmunity;
+import com.karmunity.models.Member;
 import com.karmunity.repositories.KarmunityRepository;
+import com.karmunity.repositories.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -18,11 +22,30 @@ public class KarmunityController {
     @Autowired
     private KarmunityRepository karmunityRepository;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
     // Create a new Karmunity
     @PostMapping
-    public ResponseEntity<Karmunity> createKarmunity(@RequestBody Karmunity karmunity) {
+    public ResponseEntity<Karmunity> createKarmunity(@RequestBody Map<String, Object> requestBody) {
+        String karmunityName = (String) requestBody.get("karmunityName");
+        List<Long> memberIds = (List<Long>) requestBody.get("members");
+        List<Member> members = memberRepository.findAllById(memberIds);
+
+        Karmunity karmunity = new Karmunity();
+        karmunity.setKarmunityName(karmunityName);
+
+        karmunity.setMembers(members);  // Add the members to the Karmunity's members list
+
+        // Also update each Member's list of Karmunities (the reverse relationship)
+        for (Member member : members) {
+            member.getKarmunities().add(karmunity);  // Add the Karmunity to each Member's karmunities list
+        }
+
         Karmunity savedKarmunity = karmunityRepository.save(karmunity);
-        return ResponseEntity.ok(savedKarmunity);
+        memberRepository.saveAll(members);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedKarmunity);
     }
 
     @GetMapping
