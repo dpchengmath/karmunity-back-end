@@ -18,6 +18,7 @@ configurations {
 
 repositories {
 	mavenCentral()
+	gradlePluginPortal()
 }
 
 dependencies {
@@ -57,6 +58,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.flywaydb.flyway") version "9.5.0"
 	id("java")
+	id("application")
 }
 
 flyway {
@@ -74,4 +76,10 @@ flyway {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+tasks.jar {
+	manifest {
+		attributes["Main-Class"] = "com.karmunity.KarmunityApplication"
+	}
 }
