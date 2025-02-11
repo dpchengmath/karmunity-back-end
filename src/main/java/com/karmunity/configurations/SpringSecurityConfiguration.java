@@ -60,7 +60,7 @@ public class SpringSecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173"));
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173", "https://karmunity-ffdd6bea6ef1.herokuapp.com"));
         corsConfiguration.setAllowedMethods(List.of("POST", "GET", "PUT", "PATCH", "DELETE"));
         corsConfiguration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         corsConfiguration.setAllowCredentials(true);

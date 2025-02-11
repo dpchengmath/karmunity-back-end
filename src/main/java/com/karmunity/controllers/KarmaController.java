@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/karma")
+@CrossOrigin(origins = {"http://localhost:5173", "https://karmunity-ffdd6bea6ef1.herokuapp.com", "https://www.karmunity.com"})
 public class KarmaController {
 
     @Autowired
