@@ -83,3 +83,7 @@ tasks.jar {
 		attributes["Main-Class"] = "com.karmunity.KarmunityApplication"
 	}
 }
+
+tasks.bootJar {
+	archiveFileName.set("karmunity.jar")
+}
